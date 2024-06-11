@@ -1,7 +1,7 @@
 
 
 # Import API keys (in a .gitignore'd file)
-from keys import weaviate_key, weaviate_url, openai_key
+from keys import weaviate_key, weaviate_url, openai_key, spotify_id, spotify_secret
 
 
 # Weaviate packages
@@ -11,6 +11,8 @@ import weaviate.classes as wvc
 # Regular web-based packages
 import requests
 import json
+import urllib.parse
+import urllib
 
 # Pandas for reading CSV
 import pandas as pd
@@ -60,7 +62,7 @@ def add_data_to_client(client, collection_name, df, columns = [], max_tokens = 8
     data = []
 
     n = len(df)
-    n = min(n, 100) # limit to 100 for now for testing
+    n = min(n, 1000) # limit to 100 for now for testing
 
     print("Adding data to client...")
     for i in tqdm(range(n)):
@@ -74,6 +76,31 @@ def add_data_to_client(client, collection_name, df, columns = [], max_tokens = 8
     # add data to given collection
     collection = client.collections.get(collection_name)
     collection.data.insert_many(data)
+
+def get_spotify_url(song, artist):
+
+    auth_response = requests.post('https://accounts.spotify.com/api/token', {
+        'grant_type': 'client_credentials',
+        'client_id': spotify_id,
+        'client_secret': spotify_secret,
+    })
+
+    auth_response_data = auth_response.json()
+    access_token = auth_response_data['access_token']
+
+    headers = {
+        'Authorization': 'Bearer {token}'.format(token=access_token)
+    }
+
+
+    query = urllib.parse.quote(f'{song} {artist}')
+    response = requests.get(f'https://api.spotify.com/v1/search?q={query}&type=track', headers=headers)
+
+    # Parse the response to get the Spotify URL of the song
+    response_data = response.json()
+    spotify_url = response_data['tracks']['items'][0]['external_urls']['spotify']
+
+    return spotify_url
 
 if __name__ == "__main__":
 
@@ -102,7 +129,7 @@ if __name__ == "__main__":
         # test query
         questions = client.collections.get("lyrics")
         
-        prompt = "im in love with myself"
+        prompt = "i want to play diablo 4 and kill loads of demons angrily"
         response = questions.generate.near_text(
             query=prompt,
             limit=1,
@@ -111,6 +138,8 @@ if __name__ == "__main__":
 
         print(response.objects[0].generated)
         print(response.objects[0].properties)
+
+        print(get_spotify_url(response.objects[0].properties["song"], response.objects[0].properties["artist"]))
 
 
     # close client after everything (even if errors)
