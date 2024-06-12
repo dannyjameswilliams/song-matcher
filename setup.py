@@ -48,7 +48,7 @@ def limit_tokens(x, max_tokens = 8192):
     if isinstance(x, str):
         return x[:max_tokens]
 
-def add_data_to_client(client, collection_name, df, columns = [], max_tokens = 8192):
+def add_data_to_client(client, collection_name, df, columns = [], max_tokens = 8192*2):
     """
     Given a pandas dataframe, add data information to the collection in the Weaviate client so that it can be vectorised.
     """
@@ -77,73 +77,5 @@ def add_data_to_client(client, collection_name, df, columns = [], max_tokens = 8
     collection = client.collections.get(collection_name)
     collection.data.insert_many(data)
 
-def get_spotify_url(song, artist):
-
-    auth_response = requests.post('https://accounts.spotify.com/api/token', {
-        'grant_type': 'client_credentials',
-        'client_id': spotify_id,
-        'client_secret': spotify_secret,
-    })
-
-    auth_response_data = auth_response.json()
-    access_token = auth_response_data['access_token']
-
-    headers = {
-        'Authorization': 'Bearer {token}'.format(token=access_token)
-    }
-
-
-    query = urllib.parse.quote(f'{song} {artist}')
-    response = requests.get(f'https://api.spotify.com/v1/search?q={query}&type=track', headers=headers)
-
-    # Parse the response to get the Spotify URL of the song
-    response_data = response.json()
-    spotify_url = response_data['tracks']['items'][0]['external_urls']['spotify']
-
-    return spotify_url
-
-if __name__ == "__main__":
-
-
-    # Connect to Weaviate client
-    client = weaviate.connect_to_weaviate_cloud(
-        cluster_url = weaviate_url,
-        auth_credentials=weaviate.auth.AuthApiKey(weaviate_key),
-        headers={
-            "X-OpenAI-Api-Key": openai_key  # Replace with your inference API key
-        }
-    )
-
-    # Print if successful connection
-    if client.is_ready():
-        print("Client connected successfully.")
-
-
-    try:
-        # Create collection and add data to it 
-        create_collection(client, collection_name="lyrics")
-        df = read_data("all_lyrics.csv")
-        add_data_to_client(client, collection_name="lyrics", df=df)
-        
-
-        # test query
-        questions = client.collections.get("lyrics")
-        
-        prompt = "i want to play diablo 4 and kill loads of demons angrily"
-        response = questions.generate.near_text(
-            query=prompt,
-            limit=1,
-            single_prompt="Give a description of {song}, including the artist {artist} and genre {type}, with a brief overview of the meaning of the lyrics, especially how it relates to the prompt" + prompt
-        )
-
-        print(response.objects[0].generated)
-        print(response.objects[0].properties)
-
-        print(get_spotify_url(response.objects[0].properties["song"], response.objects[0].properties["artist"]))
-
-
-    # close client after everything (even if errors)
-    finally:
-        client.close()
         
 
