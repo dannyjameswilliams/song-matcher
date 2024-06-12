@@ -123,20 +123,7 @@ if __name__ == "__main__":
             "album_image_url": album_image_url,
             "palette": palette
         }
-        print(album_image_url)
-
+        
         return jsonify(output)
-    
-    @app.route('/api/data', methods=['GET'])
-    def get_data():
-        data = {'message': 'Song Recommender!'}
-        return jsonify(data)
-
-    # @app.route('/api/submit', methods=['POST'])
-    # def submit_data():
-    #     data = request.json
-    #     user_input = data.get('input')
-    #     response_message = f'You sent: {user_input}'
-    #     return jsonify({'message': response_message})
 
     app.run(port=5000, debug=True)

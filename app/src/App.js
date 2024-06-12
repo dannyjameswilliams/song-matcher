@@ -102,7 +102,7 @@ function App() {
   return (
         <div >
           <header className="App-header">
-          <h1>AI Song Recommender</h1>
+          <h1> AI 🎵 Recommender </h1>
           <form onSubmit={handleSubmit}>
             <textarea
               type="text"
@@ -111,33 +111,40 @@ function App() {
               placeholder="Enter your mood..."
             />
             <button type="submit">🎶 Recommend</button>
-            {isLoading && <div className="loader" id="loader"></div>}
+            
           </form>
         </header>
+    
+        <div className="center-loading">
+          <center>
+          {isLoading && <div className="loader" id="loader"></div>}
+          </center>
+        
 
-        {/* Boxes for album art, song title, artist name, and recommendation */}
-        {albumUrl &&
-          <div className="center-box">
-
-            <div className="imagebox" style={{ backgroundColor: lightenColor(palette[0], 5) }}>
-              <div className="image-container">
-                <img src={albumUrl} alt="Album art" />
-                {song && <h1 style={{color: invertColor(palette[0]) }}> {song} </h1> }
-                {artist && <h2 style={{color: invertColor(palette[1]) }}> {artist} </h2>}
-              </div>
-              <div className="text-right">
-              </div>
-            </div>
-
-            <div className="textbox">
-              <div className="image-container">
-                <img src={stars} alt="AI generation symbol" />
-              </div>
+          {/* Boxes for album art, song title, artist name, and recommendation */}
+          {albumUrl &&
+            <div className="center-box">
               
-              {responseMessage && <p > {responseMessage} </p>}
+              <div className="imagebox" style={{ backgroundColor: lightenColor(palette[0], 5) }}>
+                <div className="image-container">
+                  <img src={albumUrl} alt="Album art" />
+                  {song && <h1 style={{color: invertColor(palette[0]) }}> {song} </h1> }
+                  {artist && <h2 style={{color: invertColor(palette[1]) }}> {artist} </h2>}
+                </div>
+                <div className="text-right">
+                </div>
+              </div>
+
+              <div className="textbox">
+                <div className="image-container">
+                  <img src={stars} alt="AI generation symbol" />
+                </div>
+                
+                {responseMessage && <p > {responseMessage} </p>}
+              </div>
             </div>
-          </div>
-        }
+          }
+        </div>
 
         {albumUrl &&
           <iframe src={`https://open.spotify.com/embed/track/${lastPart}`} width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
