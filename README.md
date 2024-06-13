@@ -81,6 +81,8 @@ This will run on port 5000, so make sure there is nothing else running on that p
 
 ### Front-end
 
+If you have the python file running in one terminal, you can open a second, separate terminal to run the remainder of this section, so that two processes are running concurrently.
+
 The front-end is entirely via React and you must first change to the `app` directory via
 ```bash
 cd app
