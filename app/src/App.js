@@ -115,7 +115,7 @@ function App() {
 
         {/* Title and submit form */}
         <header className="App-header">
-        <h1> AI 🎵 Recommender </h1>
+        <h1> AI MoodSync  </h1>
         <form onSubmit={handleSubmit}>
           <textarea
             type="text"
@@ -123,7 +123,7 @@ function App() {
             onChange={(e) => setInput(e.target.value)}
             placeholder={text}
           />
-          <button type="submit">🎶 Recommend</button>
+          <button type="submit">🎵 Recommend</button>
           
         </form>
       </header>
