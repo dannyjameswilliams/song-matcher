@@ -11,6 +11,8 @@ import './App.css';
 // image 
 import stars from './starssmall.png';
 
+// spotify embed
+import { Spotify } from 'react-spotify-embed';
 
 // invert a hex color (written by copilot) for text on background
 function invertColor(hex) {
@@ -131,24 +133,29 @@ function App() {
                   {song && <h1 style={{color: invertColor(palette[0]) }}> {song} </h1> }
                   {artist && <h2 style={{color: invertColor(palette[1]) }}> {artist} </h2>}
                 </div>
-                <div className="text-right">
+              </div>
+
+
+              <div className="vertical-area">
+                <div className="textbox">
+                  <div className="image-container">
+                    <img src={stars} alt="AI generation symbol" />
+                  </div>
+                  {responseMessage && <p > {responseMessage} </p>}
+                </div>
+
+                <div className="spotify">
+                  {albumUrl &&
+                    <Spotify wide link={`https://open.spotify.com/track/${lastPart}`} />
+                  }
                 </div>
               </div>
 
-              <div className="textbox">
-                <div className="image-container">
-                  <img src={stars} alt="AI generation symbol" />
-                </div>
-                
-                {responseMessage && <p > {responseMessage} </p>}
-              </div>
             </div>
           }
         </div>
 
-        {albumUrl &&
-          <iframe src={`https://open.spotify.com/embed/track/${lastPart}`} width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
-        }
+        
 
     </div>
   );

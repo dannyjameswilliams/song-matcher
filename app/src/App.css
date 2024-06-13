@@ -52,7 +52,7 @@ p {
 }
 
 .center-loading {
-  display: block;
+  display: flexbox;
   justify-content: center; /* Center horizontally */
   align-items: center; /* Center vertically */
   height: 100vh; /* Take up full viewport height */
@@ -136,8 +136,8 @@ h1, h2 {
   background-color: #f0f0f0; 
   border: 1px solid none; 
   border-radius: 4px; 
-  padding: 5px; 
-  max-width: 500px;
+  padding: 20px; 
+  max-width: 480px;
   margin: 5px;
   margin-left: 10px; 
   overflow: auto; 
@@ -149,25 +149,24 @@ h1, h2 {
   grid-template-rows: auto 1fr;
   align-items: start;
   height: auto; /* added this line */
-  width:auto;
+  width: auto;
   align-self: start;
-  padding: 10px;
+  padding-left: 0px;
+  padding-right: 10px;
+  
 }
 
-.textbox img {
-  height: 45px; 
+.textbox .image-container img {
+  height: 40px; 
   align-self: start;
 }
 
-.textbox .text-right {
-  margin-left: 10px; 
-  overflow: auto; 
-  word-wrap: break-word; 
-}
 
-.textbox .text-right p {
+.textbox p {
   margin: 0; 
-  font-size: 5px;
+  color: #262626;
+  font-size: 15px;
+
 }
 
 /* CSS */
@@ -184,4 +183,26 @@ h1, h2 {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+/* text box (right) */
+.spotify {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: auto;
+  height: auto; /* fixed textbox height */
+  max-width: 520px;
+  margin: 0px;
+  margin-left: 10px; 
+  overflow: auto; 
+  word-wrap: break-word; 
+}
+
+.vertical-area {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: start;
+  height: 100vh;
 }
