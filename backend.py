@@ -1,5 +1,4 @@
-
-
+# API keys (ignored in .gitignore)
 from keys import weaviate_key, weaviate_url, openai_key, spotify_id, spotify_secret
 
 # Weaviate packages
@@ -7,7 +6,6 @@ import weaviate
 
 # Regular web-based packages
 import requests
-# import json
 import urllib.parse
 import urllib
 from io import BytesIO
@@ -15,13 +13,11 @@ from io import BytesIO
 # random library for randomising the song choice
 import random
 
-
 # Flask for the app
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 
 app = Flask(__name__)
-
-from flask_cors import CORS
 CORS(app)
 
 # for getting colour palette of image
@@ -73,12 +69,40 @@ def get_spotify_info(song, artist):
 
     return spotify_url, album_image_url
 
+@app.route('/api/randomtext', methods=['GET'])
+def get_random_query_text():
+    """
+    A silly function (for fun) that gives a random piece of text as placeholder for the form submission
+    """
+    
+    possibilities = [
+        "Enter your mood...",
+        "How are you feeling today?",
+        "What's on your mind?",
+        "What's the vibes?",
+        "Tell me your mood...",
+        "Hey, what's going on?",
+        "What's up?",
+        "How are you feeling?",
+        "Give me a feeling...",
+        "Give me an idea...",
+        "Give me a vibe...",
+        "Give me a mood...",
+        "Give me a thought...",
+        "What's going on up there?"
+    ]
+    data = {"text": random.choice(possibilities)}
+    return jsonify(data)
 
 def query(client, input_text, collection_name):
+    """
+    Query function (NOT the API endpoint) that performs near_text search and generation of recommendation across song dataset.
+    """
     
     collection = client.collections.get(collection_name)
 
     # return 5 objects and randomise the choice within those
+    # generate.near_text performs vector search and returns the most similar text
     response = collection.generate.near_text(
         query=input_text,
         limit=5,
@@ -98,20 +122,29 @@ def query(client, input_text, collection_name):
 
 if __name__ == "__main__":
 
+
+    # Connect to client
     client = weaviate.connect_to_weaviate_cloud(
         cluster_url = weaviate_url,
         auth_credentials=weaviate.auth.AuthApiKey(weaviate_key),
         headers={
-            "X-OpenAI-Api-Key": openai_key  # Replace with your inference API key
+            "X-OpenAI-Api-Key": openai_key  
         }
     )
 
+
+    # API endpoint for querying database with vector search, essentially a wrapper for 'query'
     @app.route('/api/submit', methods=['POST'])
     def react_query():
+
+        # Get input from POST
         data = request.json
         user_input = data.get('input')
+
+        # Run query function
         props, generated_text, spotify_url, album_image_url = query(client, user_input, "lyrics")
 
+        # Format output for return to frontend
         song = props["song"]
         artist = props["artist"]
         palette = get_palette(album_image_url, 2)
@@ -126,4 +159,5 @@ if __name__ == "__main__":
         
         return jsonify(output)
 
-    app.run(port=5000, debug=True)
+    # Run app on specified port number
+    app.run(port=5000, debug=False)

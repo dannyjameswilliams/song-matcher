@@ -1,8 +1,5 @@
-
-
 # Import API keys (in a .gitignore'd file)
 from keys import weaviate_key, weaviate_url, openai_key, spotify_id, spotify_secret
-
 
 # Weaviate packages
 import weaviate
@@ -28,8 +25,8 @@ def create_collection(client, collection_name="lyrics"):
     if not client.collections.exists(collection_name):
         client.collections.create(
             name=collection_name,
-            vectorizer_config=wvc.config.Configure.Vectorizer.text2vec_openai(),  # If set to "none" you must always provide vectors yourself. Could be any other "text2vec-*" also.
-            generative_config=wvc.config.Configure.Generative.openai()  # Ensure the `generative-openai` module is used for generative queries
+            vectorizer_config=wvc.config.Configure.Vectorizer.text2vec_openai(), 
+            generative_config=wvc.config.Configure.Generative.openai()  
         )
         print(f"Collection {collection_name} created.")
     else:
@@ -44,11 +41,11 @@ def read_data(fname = "all_lyrics.csv"):
     df = pd.read_csv(fname)
     return df
 
-def limit_tokens(x, max_tokens = 8192):
+def limit_tokens(x, max_tokens):
     if isinstance(x, str):
         return x[:max_tokens]
 
-def add_data_to_client(client, collection_name, df, columns = [], max_tokens = 8192*2):
+def add_data_to_client(client, collection_name, df, columns = [], max_tokens = 8192):
     """
     Given a pandas dataframe, add data information to the collection in the Weaviate client so that it can be vectorised.
     """
@@ -62,7 +59,7 @@ def add_data_to_client(client, collection_name, df, columns = [], max_tokens = 8
     data = []
 
     n = len(df)
-    n = min(n, 1000) # limit to 100 for now for testing
+    n = min(n, 100) # limit to 100 for now for testing
 
     print("Adding data to client...")
     for i in tqdm(range(n)):
@@ -77,5 +74,19 @@ def add_data_to_client(client, collection_name, df, columns = [], max_tokens = 8
     collection = client.collections.get(collection_name)
     collection.data.insert_many(data)
 
-        
 
+if __name__ == "__main__":
+
+    # connect to client
+    client = weaviate.connect_to_weaviate_cloud(
+        cluster_url = weaviate_url,
+        auth_credentials=weaviate.auth.AuthApiKey(weaviate_key),
+        headers={
+            "X-OpenAI-Api-Key": openai_key  # Replace with your inference API key
+        }
+    )
+
+    # create, add data, and vectorise etc.
+    create_collection(client, collection_name="lyrics")
+    df = read_data(fname = "all_lyrics.csv")
+    add_data_to_client(client, "lyrics", df, max_tokens = 8192*5)

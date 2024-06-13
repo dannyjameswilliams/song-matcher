@@ -54,6 +54,7 @@ function lightenColor(color, percent) {
 function App() {
 
   // set up states
+  const [text, setText] = useState('');
   const [input, setInput] = useState('');
   const [responseMessage, setResponseMessage] = useState('');
   const [url, setUrl] = useState('');
@@ -63,6 +64,16 @@ function App() {
   const [palette, setPalette] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  // on load, get a random text for the form box from the python function
+  useEffect(() => {
+    axios.get('http://localhost:5000/api/randomtext')
+      .then(response => {
+        setText(response.data.text);
+      })
+      .catch(error => {
+        console.error('There was an error fetching the data!', error);
+      });
+  }, []);
 
   // form input
   const handleSubmit = (event) => {
@@ -110,7 +121,7 @@ function App() {
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Enter your mood..."
+            placeholder={text}
           />
           <button type="submit">🎶 Recommend</button>
           
