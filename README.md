@@ -77,6 +77,11 @@ PORT=XXXX npm start
 ```
 which will change it to whatever number you replace `XXXX` with.
 
+## 🪛 Modifications
+
+If you would like to modify the code or app in any way, it should be relatively straightforward to figure out as the code should be fully commented and easy to understand.
+
+Some ideas for modifications would be to change how the search works, or to change the embedding model of the songs/queries.
 
 
 ## Credits
