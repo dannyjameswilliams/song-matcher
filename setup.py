@@ -59,7 +59,7 @@ def add_data_to_client(client, collection_name, df, columns = [], max_tokens = 8
     data = []
 
     n = len(df)
-    n = min(n, 100) # limit to 100 for now for testing
+    # n = min(n, 100) # limit to 100 for now for testing
 
     print("Adding data to client...")
     for i in tqdm(range(n)):
