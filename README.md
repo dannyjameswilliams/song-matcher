@@ -4,6 +4,8 @@
 
 A small web-app that matches a song to your input mood based on lyrics, using [Weaviate](https://weaviate.io/) and a [kaggle dataset](https://www.kaggle.com/datasets/elizzyliu/song-lyrics) of song lyrics.
 
+![Example Usage](https://github.com/dannyjameswilliams/song-matcher/example.gif)
+
 
 
 ### 📋 TODO 📋:
