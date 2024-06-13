@@ -6,6 +6,7 @@ A small web-app that matches a song to your input mood based on lyrics, using [W
 
 ![til](https://raw.githubusercontent.com/dannyjameswilliams/song-matcher/main/example.gif)
 
+**Note:** you will need both a [Weaviate sandbox cluster](https://weaviate.io/developers/wcs/quickstart#sandbox-clusters) along with its corresponding API key and URL, as well as an [OpenAI account and API key](https://platform.openai.com/docs/overview). This is explained more in Installation below.
 
 ### 📋 TODO 📋:
  - Add previously recommended history list
@@ -54,14 +55,31 @@ and install the required packages with `npm`
 npm install 
 ```
 
+### Setting up API Keys (mandatory)
+
+This app relies on access to API keys for both [Weaviate](https://weaviate.io/developers/wcs/quickstart#sandbox-clusters), [Spotify](https://developer.spotify.com/documentation/web-api) and [OpenAI account and API key](https://platform.openai.com/docs/overview). You need to save these keys in a `keys.py` file so that the python code can find it. The variables should be named as follows
+
+```python
+weaviate_key   = ... # Obtained from Weavaite cloud dashboard
+weaviate_url   = ... # Obtained from Weaviate cloud dashboard
+openai_key     = ... # Obtained from OpenAI account
+spotify_id     = ... # Obtained from Spotify WebAPI
+spotify_secret = ... # Obtained from Spotify WebAPI
+```
+
 
 ## 🔦 Usage
+
+
+### Back-end
 
 We need to set up the front-end and the back-end separately. Ensure you are in the root directory (i.e. `.../song-finder` and not `.../song-finder/app`). The back-end is managed by Python and is located entirely within the home directory, and thus can be started via
 ```bash
 python backend.py
 ```
 This will run on port 5000, so make sure there is nothing else running on that port. If you would like to modify the port number, simply change `5000` in the line `app.run(port=5000, debug=False)` at the bottom of `backend.py` to a different value. Additionally, change any instances of `localhost:5000` inside of `app/App.js` to the new port number.
+
+### Front-end
 
 The front-end is entirely via React and you must first change to the `app` directory via
 ```bash
