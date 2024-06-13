@@ -1,4 +1,3 @@
-
 // obviously needed
 import React, { useEffect, useState } from 'react';
 
@@ -51,17 +50,10 @@ function lightenColor(color, percent) {
   return "#" + (0x1000000 + (R<255?R<1?0:R:255)*0x10000 + (G<255?G<1?0:G:255)*0x100 + (B<255?B<1?0:B:255)).toString(16).slice(1);
 };
 
-// JavaScript
-function showLoader() {
-  document.getElementById('loader').style.display = 'block';
-}
-
-function hideLoader() {
-  document.getElementById('loader').style.display = 'none';
-}
-
 // main app function
 function App() {
+
+  // set up states
   const [input, setInput] = useState('');
   const [responseMessage, setResponseMessage] = useState('');
   const [url, setUrl] = useState('');
@@ -76,88 +68,97 @@ function App() {
   const handleSubmit = (event) => {
     event.preventDefault();
     
+    // loading spinner activates
     setIsLoading(true);
 
+    // post to python function
     axios.post('http://localhost:5000/api/submit', { input })
       .then(response => {
 
+        // loading stops
         setIsLoading(false);
         
+        // set states based on output of python
         setResponseMessage(response.data.generated_text);
         setUrl(response.data.spotify_url);
         setSong(response.data.song);
         setArtist(response.data.artist);
-
         setAlbumUrl(response.data.album_image_url);
-
         setPalette(response.data.palette);
       })
       .catch(error => {
+        // catch errors and stop loading
         setIsLoading(false);
         console.error('There was an error fetching the data!', error);
       });
   };
 
+  // for spotify widget, need the track ID (last part of the spotify URL)
   let parts = url.split("/");
   let lastPart = parts[parts.length - 1];
 
+  // render app
   return (
-        <div >
-          <header className="App-header">
-          <h1> AI 🎵 Recommender </h1>
-          <form onSubmit={handleSubmit}>
-            <textarea
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Enter your mood..."
-            />
-            <button type="submit">🎶 Recommend</button>
+      // main div
+      <div>
+
+        {/* Title and submit form */}
+        <header className="App-header">
+        <h1> AI 🎵 Recommender </h1>
+        <form onSubmit={handleSubmit}>
+          <textarea
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Enter your mood..."
+          />
+          <button type="submit">🎶 Recommend</button>
+          
+        </form>
+      </header>
+
+      {/* Main area with loading spinner */}
+      <div className="center-loading">
+
+        {/* Loading spinner */}
+        <center>
+        {isLoading && <div className="loader" id="loader"></div>}
+        </center>
+      
+
+        {/* Boxes for album art, song title, artist name, recommendation, and spotify widget */}
+        {albumUrl &&
+          <div className="center-box">
             
-          </form>
-        </header>
-    
-        <div className="center-loading">
-          <center>
-          {isLoading && <div className="loader" id="loader"></div>}
-          </center>
-        
-
-          {/* Boxes for album art, song title, artist name, and recommendation */}
-          {albumUrl &&
-            <div className="center-box">
-              
-              <div className="imagebox" style={{ backgroundColor: lightenColor(palette[0], 5) }}>
-                <div className="image-container">
-                  <img src={albumUrl} alt="Album art" />
-                  {song && <h1 style={{color: invertColor(palette[0]) }}> {song} </h1> }
-                  {artist && <h2 style={{color: invertColor(palette[1]) }}> {artist} </h2>}
-                </div>
+            {/* Album + song name + artist */}
+            <div className="imagebox" style={{ backgroundColor: lightenColor(palette[0], 5) }}>
+              <div className="image-container">
+                <img src={albumUrl} alt="Album art" />
+                {song && <h1 style={{color: invertColor(palette[0]) }}> {song} </h1> }
+                {artist && <h2 style={{color: invertColor(palette[1]) }}> {artist} </h2>}
               </div>
-
-
-              <div className="vertical-area">
-                <div className="textbox">
-                  <div className="image-container">
-                    <img src={stars} alt="AI generation symbol" />
-                  </div>
-                  {responseMessage && <p > {responseMessage} </p>}
-                </div>
-
-                <div className="spotify">
-                  {albumUrl &&
-                    <Spotify wide link={`https://open.spotify.com/track/${lastPart}`} />
-                  }
-                </div>
-              </div>
-
             </div>
-          }
+
+            {/* Vertically split recommendation and spotify widget */}
+            <div className="vertical-area">
+              <div className="textbox">
+                <div className="image-container">
+                  <img src={stars} alt="AI generation symbol" />
+                </div>
+                {responseMessage && <p > {responseMessage} </p>}
+              </div>
+
+              <div className="spotify">
+                {albumUrl &&
+                  <Spotify wide link={`https://open.spotify.com/track/${lastPart}`} />
+                }
+              </div>
+            </div>
+
+          </div>
+        }
         </div>
-
-        
-
-    </div>
+      </div>
   );
 }
 

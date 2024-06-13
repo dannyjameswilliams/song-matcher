@@ -1,3 +1,5 @@
+
+/* General CSS style */
 .App {
   text-align: center;
 }
@@ -13,65 +15,49 @@
   color: black;
 }
 
+/* Input form for writing mood */
 textarea {
   padding: 8px;
   margin: 10px;
   font-size: 15px;
   width: 300px;
-  min-height: 20px; /* Set initial height to match the button */
-  resize: vertical; /* Allow vertical resizing */
+  min-height: 20px; 
+  resize: vertical; 
 }
 
 form {
   display: flex;
-  align-items: center; /* Vertically aligns all items in the form */
-  justify-content: space-between; /* Adds space between the textarea and the button */
+  align-items: center; 
+  justify-content: space-between; 
 }
 
+/* Submit button */
 button {
-  padding: 15px 20px; /* Increase horizontal padding */
+  padding: 15px 20px; 
   margin: 10px;
   font-size: 18px;
   font-weight: bold ;
-  background-color: #adecf7; /* Change background color */
-  color: black; /* Change text color */
-  border: none; /* Remove border */
-  border-radius: 4px; /* Round corners */
-  cursor: pointer; /* Change cursor to pointer on hover */
-  transition: all 0.3s ease; /* Add transition for hover effect */
+  background-color: #adecf7; 
+  color: black; 
+  border: none; 
+  border-radius: 10px;
+  cursor: pointer; 
+  transition: all 0.3s ease; 
 }
 
 button:hover {
-  background-color: #76bfcc; /* Change background color on hover */
+  background-color: #76bfcc; 
 }
 
-p {
-  margin-top: 20px;
-  font-size: 18px;
-  color: #000000;
-}
-
+/* Main area where the loading bar / content will appear */
 .center-loading {
   display: flexbox;
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
-  height: 100vh; /* Take up full viewport height */
-}
-
-.center-content {
-  display: flex;
-  flex-direction: column;
-  align-items: left;
   justify-content: center;
-  text-align: left;
-  margin: 0 auto;
-  width: 75%; 
+  align-items: center; 
+  height: 100vh; 
 }
 
-.body-text {
-  color: #000000
-}
-
+/*  individual boxes for content to appear */
 .center-box {
   display: flex;
   justify-content: center;
@@ -81,6 +67,7 @@ p {
 
 }
 
+/*  controls the space between title and also song name and artist */
 h1, h2 {
   margin: 0.15em 0; 
 }
@@ -94,7 +81,7 @@ h1, h2 {
   height: auto; /* fixed box height */
   background-color: #f0f0f0; 
   border: 1px solid none; 
-  border-radius: 4px; 
+  border-radius: 10px; 
   padding: 10px; 
   max-width: 800px;
   margin: 5px;
@@ -102,7 +89,6 @@ h1, h2 {
   overflow: auto; 
   word-wrap: break-word; 
 }
-
 
 
 .imagebox .image-container {
@@ -117,7 +103,7 @@ h1, h2 {
   max-height: 200px;
   align-items: start;
   width: auto;
-  border-radius: 5%;
+  border-radius: 7%;
 }
 
 .imagebox .text-right {
@@ -135,7 +121,7 @@ h1, h2 {
   height: auto; /* fixed textbox height */
   background-color: #f0f0f0; 
   border: 1px solid none; 
-  border-radius: 4px; 
+  border-radius: 10px; 
   padding: 20px; 
   max-width: 480px;
   margin: 5px;
@@ -161,7 +147,7 @@ h1, h2 {
   align-self: start;
 }
 
-
+/* font and style of text in AI recommendation box */
 .textbox p {
   margin: 0; 
   color: #262626;
@@ -169,7 +155,7 @@ h1, h2 {
 
 }
 
-/* CSS */
+/* loading bar when press submit */
 .loader {
   border: 12px solid #f3f3f3;
   border-radius: 50%;
@@ -185,7 +171,7 @@ h1, h2 {
   100% { transform: rotate(360deg); }
 }
 
-/* text box (right) */
+/* spotify embed widget to match style of other boxes */
 .spotify {
   display: flex;
   justify-content: space-between;
@@ -197,8 +183,10 @@ h1, h2 {
   margin-left: 10px; 
   overflow: auto; 
   word-wrap: break-word; 
+  padding-top:5px;
 }
 
+/* area for both spotify and recommender text to be aligned one on top of the other */
 .vertical-area {
   display: flex;
   flex-direction: column;
