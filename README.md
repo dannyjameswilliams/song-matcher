@@ -55,7 +55,7 @@ and install the required packages with `npm`
 npm install 
 ```
 
-### Setting up API Keys (mandatory)
+### Setting up API Keys 
 
 This app relies on access to API keys for both [Weaviate](https://weaviate.io/developers/wcs/quickstart#sandbox-clusters), [Spotify](https://developer.spotify.com/documentation/web-api) and [OpenAI account and API key](https://platform.openai.com/docs/overview). You need to save these keys in a `keys.py` file in the _root_ directory so that the python code can find it. The variables should be named as follows
 
@@ -67,6 +67,12 @@ spotify_id     = ... # Obtained from Spotify WebAPI
 spotify_secret = ... # Obtained from Spotify WebAPI
 ```
 
+### Setting up the database
+When you have created a Weaviate account, you need to run
+```bash
+python setup.py
+```
+from the root directory, which will populate a Weaviate collection called 'lyrics' on your account for the given Weaviate URL supplied in the 'keys.py' file. This collection will be queried when the app is run.
 
 ## 🔦 Usage
 
