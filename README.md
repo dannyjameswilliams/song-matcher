@@ -1,4 +1,4 @@
-# 🎶 AI MoodSync 🎶 (song matcher)
+# 🎶 AI MoodSync 🎶 (Weaviate Project)
 
 ## ℹ Introduction
 
