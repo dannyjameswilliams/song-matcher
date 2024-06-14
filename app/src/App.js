@@ -117,13 +117,33 @@ function App() {
         <header className="App-header">
         <h1> AI MoodSync  </h1>
         <form onSubmit={handleSubmit}>
+          <div class="info-icon">
+            <i>🛈</i>
+            <span class="info-text">
+              Performs a vector search on your input with a database of songs, 
+              and gives an AI generated recommendation as to why the recommended song is chosen. 
+              <br></br><br></br> 
+              Uses Weaviate for the vector search, and Spotify for the song recommendation.
+            </span>
+          </div>
           <textarea
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder={text}
           />
-          <button type="submit">🎵 Recommend</button>
+
+          {/* Submit button with loading spinner */}
+          <button type="submit">
+              <div className="button-content">
+                <p className="button-text" style={{visibility: !isLoading ? 'visible' : 'collapse' }}>🎵 Recommend</p>
+                
+                {/* Loading spinner */}
+                <center className="loader-container" style={{visibility: isLoading ? 'visible' : 'collapse' }}>
+                  <div className="loader" id="loader"/>
+                </center>
+              </div>
+            </button>
           
         </form>
       </header>
@@ -131,10 +151,7 @@ function App() {
       {/* Main area with loading spinner */}
       <div className="center-loading">
 
-        {/* Loading spinner */}
-        <center>
-        {isLoading && <div className="loader" id="loader"></div>}
-        </center>
+  
       
 
         {/* Boxes for album art, song title, artist name, recommendation, and spotify widget */}

@@ -17,6 +17,10 @@ import pandas as pd
 # TQDM for progress bar on data upload
 from tqdm.auto import tqdm
 
+# tiktoken for accurate count of openAI tokenisation (counting tokens)
+import tiktoken
+enc = tiktoken.get_encoding("cl100k_base") # I think this is the encoding scheme for text2vec
+
 
 def create_collection(client, collection_name="lyrics"):
     """
@@ -41,9 +45,20 @@ def read_data(fname = "all_lyrics.csv"):
     df = pd.read_csv(fname)
     return df
 
+
 def limit_tokens(x, max_tokens):
+
     if isinstance(x, str):
-        return x[:max_tokens]
+        tokenized = enc.encode(x)
+        if len(tokenized) > max_tokens:
+            tokenized = tokenized[:max_tokens]
+        return enc.decode(tokenized)
+    else:
+        return x
+
+# def limit_tokens(x, max_tokens):
+#     if isinstance(x, str):
+#         return x[:max_tokens]
 
 def add_data_to_client(client, collection_name, df, columns = [], max_tokens = 8192):
     """
@@ -72,7 +87,12 @@ def add_data_to_client(client, collection_name, df, columns = [], max_tokens = 8
 
     # add data to given collection
     collection = client.collections.get(collection_name)
-    collection.data.insert_many(data)
+
+    # load in chunks of 1000
+    for i in range(3000, len(data), 1000):
+        print(f"Adding data from {i} to {i+1000}...")
+        collection.data.insert_many(data[i:i+1000])
+
 
 
 if __name__ == "__main__":
@@ -89,4 +109,4 @@ if __name__ == "__main__":
     # create, add data, and vectorise etc.
     create_collection(client, collection_name="lyrics")
     df = read_data(fname = "all_lyrics.csv")
-    add_data_to_client(client, "lyrics", df, max_tokens = 8192*5)
+    add_data_to_client(client, "lyrics", df, max_tokens = 7000) # 7000 < 8192 for safety in case limit_tokens is not perfect and even with tiktoken it doesnt seem to work well
