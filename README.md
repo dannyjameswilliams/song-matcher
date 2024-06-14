@@ -6,12 +6,13 @@ A small web-app that matches a song to your input mood based on lyrics, using [W
 
 ![Example usage](https://raw.githubusercontent.com/dannyjameswilliams/song-matcher/c4482bd57e8538ed6e69379db55d59311df01f85/example.gif)
 
-**Note:** you will need both a [Weaviate sandbox cluster](https://weaviate.io/developers/wcs/quickstart#sandbox-clusters) along with its corresponding API key and URL, as well as an [OpenAI account and API key](https://platform.openai.com/docs/overview). This is explained more in Installation below.
+**Note:** you will need a [Weaviate sandbox cluster](https://weaviate.io/developers/wcs/quickstart#sandbox-clusters) along with its corresponding API key and URL for performing the vector search, a [Spotify WebAPI](https://developer.spotify.com/documentation/web-api) for retrieving song information such as album art, as well as an [OpenAI account and API key](https://platform.openai.com/docs/overview) for actually running the embeddings and text generation. This is explained more in the Installation section below.
 
 ### 📋 TODO 📋:
  - Add previously recommended history list
  - Use a larger database of songs
  - Implement multiple search strategies using more embedding models.
+ - Replace Spotify API with another way of retrieving album art, and make the Spotify embed optional
 
 ## 🛠 How it works
 
