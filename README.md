@@ -4,7 +4,7 @@
 
 A small web-app that matches a song to your input mood based on lyrics, using [Weaviate](https://weaviate.io/) and a [kaggle dataset](https://www.kaggle.com/datasets/elizzyliu/song-lyrics) of song lyrics.
 
-![til](https://raw.githubusercontent.com/dannyjameswilliams/song-matcher/main/example.gif)
+![Example usage](https://raw.githubusercontent.com/dannyjameswilliams/song-matcher/c4482bd57e8538ed6e69379db55d59311df01f85/example.gif)
 
 **Note:** you will need both a [Weaviate sandbox cluster](https://weaviate.io/developers/wcs/quickstart#sandbox-clusters) along with its corresponding API key and URL, as well as an [OpenAI account and API key](https://platform.openai.com/docs/overview). This is explained more in Installation below.
 
