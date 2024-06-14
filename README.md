@@ -55,9 +55,9 @@ and install the required packages with `npm`
 npm install 
 ```
 
-### Setting up API Keys (mandatory)
+### Setting up API Keys 
 
-This app relies on access to API keys for both [Weaviate](https://weaviate.io/developers/wcs/quickstart#sandbox-clusters), [Spotify](https://developer.spotify.com/documentation/web-api) and [OpenAI account and API key](https://platform.openai.com/docs/overview). You need to save these keys in a `keys.py` file so that the python code can find it. The variables should be named as follows
+This app relies on access to API keys for [Weaviate](https://weaviate.io/developers/wcs/quickstart#sandbox-clusters), [Spotify](https://developer.spotify.com/documentation/web-api) and [OpenAI account and API key](https://platform.openai.com/docs/overview). You need to save these keys in a `keys.py` file in the _root_ directory so that the python code can find it. The variables should be named as follows
 
 ```python
 weaviate_key   = ... # Obtained from Weavaite cloud dashboard
@@ -67,6 +67,12 @@ spotify_id     = ... # Obtained from Spotify WebAPI
 spotify_secret = ... # Obtained from Spotify WebAPI
 ```
 
+### Setting up the database
+When you have created a Weaviate account, you need to run
+```bash
+python setup.py
+```
+from the root directory, which will populate a Weaviate collection called 'lyrics' on your account for the given Weaviate URL supplied in the 'keys.py' file. This collection will be queried when the app is run.
 
 ## 🔦 Usage
 
@@ -80,6 +86,8 @@ python backend.py
 This will run on port 5000, so make sure there is nothing else running on that port. If you would like to modify the port number, simply change `5000` in the line `app.run(port=5000, debug=False)` at the bottom of `backend.py` to a different value. Additionally, change any instances of `localhost:5000` inside of `app/App.js` to the new port number.
 
 ### Front-end
+
+If you have the python file running in one terminal, you can open a second, separate terminal to run the remainder of this section, so that two processes are running concurrently.
 
 The front-end is entirely via React and you must first change to the `app` directory via
 ```bash
