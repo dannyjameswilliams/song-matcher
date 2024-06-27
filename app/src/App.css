@@ -244,8 +244,8 @@ h2 {
   padding: 10px;
   position: absolute;
   z-index: 1;
-  bottom: -300%; 
-  left: 20%;
+  bottom: -75%; 
+  left: -350%;
   margin-left: -108px; 
   opacity: 0;
   transition: opacity 0.3s;
